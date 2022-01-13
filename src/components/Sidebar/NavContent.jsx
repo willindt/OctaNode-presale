@@ -1,10 +1,5 @@
 import { useCallback, useState } from "react";
 import { NavLink } from "react-router-dom";
-import Social from "./Social";
-import externalUrls from "./externalUrls";
-import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
-import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
-import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
 import { ReactComponent as DiscordIcon } from "../../assets/icons/discord.svg";
 import { ReactComponent as TwitterIcon } from "../../assets/icons/twitter.svg";
 import { ReactComponent as LogoIcon } from "../../assets/icons/OctaNode.svg";

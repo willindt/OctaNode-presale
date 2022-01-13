@@ -145,7 +145,7 @@ function App() {
     // We want to ensure that we are storing the UTM parameters for later, even if the user follows links
     storeQueryParameters();
     if (shouldTriggerSafetyCheck()) {
-      dispatch(info("Safety Check: Always verify you're on dao.athen.com!"));
+      dispatch(info("Safety Check: Always verify you're on octanode presale!"));
     }
   }, []);
 

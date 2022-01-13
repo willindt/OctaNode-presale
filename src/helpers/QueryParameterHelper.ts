@@ -17,7 +17,6 @@ export function storeQueryParameters() {
 
   // window.location.search is supposed to be what contains the query parameters
   // however it was not returning anything
-  // so we use href instead: https://app.hectordao.com/#/stake?utm_campaign=foo
   if (!window.location || !window.location.href) {
     console.warn("Unable to access window.location");
     window.sessionStorage.removeItem(sessionStorageKey);
