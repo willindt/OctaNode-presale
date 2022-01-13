@@ -1,125 +1,16 @@
 import { ethers } from "ethers";
 import { addresses } from "../constants";
-import { abi as OlympusStaking } from "../abi/OlympusStaking.json";
-import { abi as OlympusStakingv2 } from "../abi/OlympusStakingv2.json";
 import { abi as PresaleContract } from "../abi/Presale.json";
-import { abi as sOHM } from "../abi/sOHM.json";
-import { abi as ierc20Abi } from "../abi/IERC20.json";
-import { abi as sOHMv2 } from "../abi/sOhmv2.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
 import { NodeHelper } from "../helpers/NodeHelper";
-import apollo from "../lib/apolloClient.js";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 import { IBaseAsyncThunk } from "./interfaces";
-import { calcRunway } from "src/helpers/Runway";
 
 const initialState = {
   loading: false,
   loadingMarketPrice: false,
 };
-const circulatingSupply = {
-  inputs: [],
-  name: "circulatingSupply",
-  outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-  stateMutability: "view",
-  type: "function",
-};
-// export const loadAppDetails = createAsyncThunk(
-//   "app/loadAppDetails",
-//   async ({ networkID, provider }: IBaseAsyncThunk, { dispatch }) => {
-//     const stakingContract = new ethers.Contract(
-//       addresses[networkID].STAKING_ADDRESS as string,
-//       OlympusStakingv2,
-//       provider,
-//     );
-//     // const old_stakingContract = new ethers.Contract(
-//     //   addresses[networkID].OLD_STAKING_ADDRESS as string,
-//     //   OlympusStakingv2,
-//     //   provider,
-//     // );
-//     // NOTE (appleseed): marketPrice from Graph was delayed, so get CoinGecko price
-//     // const marketPrice = parseFloat(graphData.data.protocolMetrics[0].ohmPrice);
-//     let marketPrice;
-//     try {
-//       const originalPromiseResult = await dispatch(
-//         loadMarketPrice({ networkID: networkID, provider: provider }),
-//       ).unwrap();
-//       marketPrice = originalPromiseResult?.marketPrice;
-//     } catch (rejectedValueOrSerializedError) {
-//       // handle error here
-//       console.error("Returned a null response from dispatch(loadMarketPrice)");
-//       return;
-//     }
-//     const sHecMainContract = new ethers.Contract(addresses[networkID].SHEC_ADDRESS as string, sOHMv2, provider);
-//     const hecContract = new ethers.Contract(addresses[networkID].HEC_ADDRESS as string, ierc20Abi, provider);
-//     // const oldsHecContract = new ethers.Contract(
-//     //   addresses[networkID].OLD_SHEC_ADDRESS as string,
-//     //   [circulatingSupply],
-//     //   provider,
-//     // );
-//     // const old_circ = await oldsHecContract.circulatingSupply();
-//     const hecBalance = await hecContract.balanceOf(addresses[networkID].STAKING_ADDRESS);
-//     // const old_hecBalance = await hecContract.balanceOf(addresses[networkID].OLD_STAKING_ADDRESS);
-//     // const stakingTVL = (hecBalance * marketPrice) / 1000000000 + (old_hecBalance * marketPrice) / 1000000000;
-//     const stakingTVL = (hecBalance * marketPrice) / 1000000000;
-//     // const stakingTVL = (hecBalance * marketPrice) / 1000000000;
-//     const circ = await sHecMainContract.circulatingSupply();
-//     // const circSupply = circ / 1000000000 + old_circ / 1000000000;
-//     const circSupply = circ / 1000000000;
-//     const total = await hecContract.totalSupply();
-//     const totalSupply = total / 1000000000;
-//     const marketCap = marketPrice * circSupply;
-//     // const runway = await calcRunway(circSupply, { networkID, provider });
-//     // console.log("debug->runway", runway);
-//     if (!provider) {
-//       console.error("failed to connect to provider, please connect your wallet");
-//       return {
-//         stakingTVL,
-//         marketPrice,
-//         marketCap,
-//         circSupply,
-//         totalSupply,
-//         // treasuryMarketValue,
-//         // runway: runway,
-//       };
-//     }
-//     const currentBlock = await provider.getBlockNumber();
-
-//     // Calculating staking
-//     const epoch = await stakingContract.epoch();
-//     // const old_epoch = await old_stakingContract.epoch();
-//     const stakingReward = epoch.distribute;
-//     // const old_stakingReward = old_epoch.distribute;
-//     const stakingRebase = stakingReward / circ;
-//     // const old_stakingRebase = old_stakingReward / old_circ;
-//     const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
-//     // const old_fiveDayRate = Math.pow(1 + old_stakingRebase, 5 * 3) - 1;
-//     const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
-//     // Current index
-//     let currentIndex = await stakingContract.index();
-//     currentIndex = currentIndex;
-//     const endBlock = epoch.endBlock;
-
-//     return {
-//       currentIndex: ethers.utils.formatUnits(currentIndex, "gwei"),
-//       currentBlock,
-//       fiveDayRate,
-//       // old_fiveDayRate,
-//       stakingAPY,
-//       stakingTVL,
-//       stakingRebase,
-//       // old_stakingRebase,
-//       marketCap,
-//       marketPrice,
-//       circSupply,
-//       totalSupply,
-//       // treasuryMarketValue,
-//       endBlock,
-//       // runway: runway,
-//     } as IAppData;
-//   },
-// );
 
 export const loadAppDetails = createAsyncThunk(
   "app/loadAppDetails",
@@ -130,7 +21,6 @@ export const loadAppDetails = createAsyncThunk(
       provider,
     );
     const percentReleased = await presaleContract.getPercentReleased();
-    console.log("debug per", percentReleased);
     const isList = await presaleContract.isList();
     const isPresaleOpen = await presaleContract.isPresaleOpen();
     const maxBusdLimit = await presaleContract.maxBusdLimit();

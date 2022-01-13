@@ -6,7 +6,6 @@ import { abi as pBHD } from "../abi/Presale.json";
 import { setAll } from "../helpers";
 
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
-import { Bond, NetworkID } from "src/lib/Bond"; // TODO: this type definition needs to move out of BOND.
 import { RootState } from "src/store";
 import { IBaseAddressAsyncThunk, ICalcUserBondDetailsAsyncThunk } from "./interfaces";
 
@@ -45,29 +44,19 @@ export const loadAccountDetails = createAsyncThunk(
     let daiBondAllowance = 0;
     let poolAllowance = 0;
 
-    // const daiContract = new ethers.Contract(addresses[networkID].DAI_ADDRESS as string, ierc20Abi, provider);
-    // const daiBalance = await daiContract.balanceOf(address);
 
     const busdContract = new ethers.Contract(addresses[networkID].BUSD_ADDRESS as string, ierc20Abi, provider);
     busdBalance = await busdContract.balanceOf(address);
 
-    // const pbhdContract = new ethers.Contract(addresses[networkID].PBHD_ADDRESS as string, pBHD, provider);
-    // pbhdBalance = await pbhdContract.balanceOf(address);
 
-    const bhdContract = new ethers.Contract(addresses[networkID].BHD_ADDRESS as string, ierc20Abi, provider);
+    const bhdContract = new ethers.Contract(addresses[networkID].TOKEN_ADDRESS as string, ierc20Abi, provider);
     bhdBalance = await bhdContract.balanceOf(address);
-    // stakeAllowance = await bhdContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
-
-    // const sbhdContract = new ethers.Contract(addresses[networkID].SBHD_ADDRESS as string, sBHD, provider);
-    // sbhdBalance = await sbhdContract.balanceOf(address);
-    // unstakeAllowance = await sbhdContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
-    // poolAllowance = await sbhdContract.allowance(address, addresses[networkID].PT_PRIZE_POOL_ADDRESS);
 
     if (addresses[networkID].BUSD_ADDRESS) {
       presaleAllowance = await busdContract.allowance(address, addresses[networkID].PRESALE_ADDRESS);
     }
 
-    if (addresses[networkID].BHD_ADDRESS) {
+    if (addresses[networkID].TOKEN_ADDRESS) {
       claimAllowance = await bhdContract.allowance(address, addresses[networkID].PRESALE_ADDRESS);
     }
 
@@ -99,69 +88,8 @@ export const loadAccountDetails = createAsyncThunk(
   },
 );
 
-export interface IUserBondDetails {
-  allowance: number;
-  interestDue: number;
-  bondMaturationBlock: number;
-  pendingPayout: string; //Payout formatted in gwei.
-}
-export const calculateUserBondDetails = createAsyncThunk(
-  "account/calculateUserBondDetails",
-  async ({ address, bond, networkID, provider }: ICalcUserBondDetailsAsyncThunk) => {
-    if (!address) {
-      return {
-        bond: "",
-        displayName: "",
-        bondIconSvg: "",
-        isLP: false,
-        allowance: 0,
-        balance: "0",
-        interestDue: 0,
-        bondMaturationBlock: 0,
-        pendingPayout: "",
-      };
-    }
-    // dispatch(fetchBondInProgress());
-
-    // Calculate bond details.
-    const bondContract = bond.getContractForBond(networkID, provider);
-    const reserveContract = bond.getContractForReserve(networkID, provider);
-
-    let interestDue, pendingPayout, bondMaturationBlock;
-
-    const bondDetails = await bondContract.bondInfo(address);
-    interestDue = bondDetails.payout / Math.pow(10, 9);
-    bondMaturationBlock = +bondDetails.vesting + +bondDetails.lastBlock;
-    pendingPayout = await bondContract.pendingPayoutFor(address);
-
-    let allowance,
-      balance = 0;
-    allowance = await reserveContract.allowance(address, bond.getAddressForBond(networkID));
-    balance = await reserveContract.balanceOf(address);
-    // formatEthers takes BigNumber => String
-    // let balanceVal = ethers.utils.formatEther(balance);
-    // balanceVal should NOT be converted to a number. it loses decimal precision
-    let deciamls = 18;
-    if (bond.name == "usdc") {
-      deciamls = 6;
-    }
-    const balanceVal = balance / Math.pow(10, deciamls);
-    return {
-      bond: bond.name,
-      displayName: bond.displayName,
-      bondIconSvg: bond.bondIconSvg,
-      isLP: bond.isLP,
-      allowance: Number(allowance),
-      balance: balanceVal.toString(),
-      interestDue,
-      bondMaturationBlock,
-      pendingPayout: ethers.utils.formatUnits(pendingPayout, "gwei"),
-    };
-  },
-);
 
 interface IAccountSlice {
-  bonds: { [key: string]: IUserBondDetails };
   balances: {
     bhd: string;
     sbhd: string;
@@ -173,7 +101,6 @@ interface IAccountSlice {
 }
 const initialState: IAccountSlice = {
   loading: false,
-  bonds: {},
   balances: { bhd: "", sbhd: "", pbhd: "", dai: "", busd: "" },
 };
 
@@ -209,19 +136,6 @@ const accountSlice = createSlice({
         state.loading = false;
         console.log(error);
       })
-      .addCase(calculateUserBondDetails.pending, state => {
-        state.loading = true;
-      })
-      .addCase(calculateUserBondDetails.fulfilled, (state, action) => {
-        if (!action.payload) return;
-        const bond = action.payload.bond;
-        state.bonds[bond] = action.payload;
-        state.loading = false;
-      })
-      .addCase(calculateUserBondDetails.rejected, (state, { error }) => {
-        state.loading = false;
-        console.log(error);
-      });
   },
 });
 

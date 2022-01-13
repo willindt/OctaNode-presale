@@ -6,7 +6,6 @@ import { useMediaQuery } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import useTheme from "./hooks/useTheme";
-import useBonds from "./hooks/Bonds";
 import { useAddress, useWeb3Context } from "./hooks/web3Context";
 import { storeQueryParameters } from "./helpers/QueryParameterHelper";
 import { shouldTriggerSafetyCheck } from "./helpers";
@@ -87,8 +86,6 @@ function App() {
 
   const isAppLoading = useSelector(state => state.app.loading);
   const isAppLoaded = useSelector(state => typeof state.app.marketPrice != "undefined"); // Hacky way of determining if we were able to load app Details.
-  let { bonds } = useBonds();
-  // bonds = bonds.concat(ohm_dai);
   async function loadDetails(whichDetails) {
     // NOTE (unbanksy): If you encounter the following error:
     // Unhandled Rejection (Error): call revert exception (method="balanceOf(address)", errorArgs=null, errorName=null, errorSignature=null, reason=null, code=CALL_EXCEPTION, version=abi/5.4.0)
@@ -225,7 +222,7 @@ function App() {
           <Switch>
 
             <Route exact path="/">
-              <Redirect to="/stake" />
+              <Redirect to="/presale" />
             </Route>
 
             <Route path="/presale">

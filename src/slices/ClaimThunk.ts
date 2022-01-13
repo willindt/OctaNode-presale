@@ -1,7 +1,6 @@
 import { ethers, BigNumber } from "ethers";
 import { addresses } from "../constants";
 import { abi as ierc20Abi } from "../abi/IERC20.json";
-import { abi as StakingHelper } from "../abi/StakingHelper.json";
 import { abi as Presale } from "../abi/Presale.json";
 import { abi as pBHD } from "../abi/Presale.json";
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./PendingTxnsSlice";
@@ -44,7 +43,7 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const pbhdContract = new ethers.Contract(addresses[networkID].BHD_ADDRESS as string, ierc20Abi, signer);
+    const pbhdContract = new ethers.Contract(addresses[networkID].TOKEN_ADDRESS as string, ierc20Abi, signer);
     let approveTx;
     let claimAllowance = await pbhdContract.allowance(address, addresses[networkID].PRESALE_ADDRESS);
 

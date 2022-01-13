@@ -10,7 +10,6 @@ import { ReactComponent as TwitterIcon } from "../../assets/icons/twitter.svg";
 import { ReactComponent as LogoIcon } from "../../assets/icons/OctaNode.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
-import useBonds from "../../hooks/Bonds";
 import { Paper, Link, Box, Typography, SvgIcon } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import "./sidebar.scss";
@@ -18,7 +17,6 @@ import "./sidebar.scss";
 function NavContent() {
   const [isActive] = useState();
   const address = useAddress();
-  const { bonds } = useBonds();
   const { chainID } = useWeb3Context();
 
   const checkPage = useCallback((match, location, page) => {

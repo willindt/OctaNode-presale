@@ -1,5 +1,5 @@
 import { JsonRpcProvider, StaticJsonRpcProvider } from "@ethersproject/providers";
-import { Bond, NetworkID } from "src/lib/Bond";
+import { NetworkID } from "src/lib/network";
 
 export interface IJsonRPCError {
   readonly message: string;
@@ -38,33 +38,4 @@ export interface IBaseAddressAsyncThunk extends IBaseAsyncThunk {
 
 // Account Slice
 
-export interface ICalcUserBondDetailsAsyncThunk extends IBaseAddressAsyncThunk, IBaseBondAsyncThunk {}
-
-// Bond Slice
-
-export interface IBaseBondAsyncThunk extends IBaseAsyncThunk {
-  readonly bond: Bond;
-}
-
-export interface IApproveBondAsyncThunk extends IBaseBondAsyncThunk {
-  readonly address: string;
-}
-
-export interface ICalcBondDetailsAsyncThunk extends IBaseBondAsyncThunk {
-  readonly value: string;
-}
-
-export interface IBondAssetAsyncThunk extends IBaseBondAsyncThunk, IValueAsyncThunk {
-  readonly slippage: number;
-}
-
-export interface IRedeemBondAsyncThunk extends IBaseBondAsyncThunk {
-  readonly address: string;
-  readonly autostake: boolean;
-}
-
-export interface IRedeemAllBondsAsyncThunk extends IBaseAsyncThunk {
-  readonly bonds: Bond[];
-  readonly address: string;
-  readonly autostake: boolean;
-}
+export interface ICalcUserBondDetailsAsyncThunk extends IBaseAddressAsyncThunk {}

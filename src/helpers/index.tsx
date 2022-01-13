@@ -2,19 +2,16 @@ import { EPOCH_INTERVAL, BLOCK_RATE_SECONDS, addresses } from "../constants";
 import { ethers } from "ethers";
 import axios from "axios";
 import { abi as PairContract } from "../abi/PairContract.json";
-import { abi as RedeemHelperAbi } from "../abi/RedeemHelper.json";
 
 import { SvgIcon } from "@material-ui/core";
 import { ReactComponent as OhmImg } from "../assets/tokens/token_OHM.svg";
 import { ReactComponent as SOhmImg } from "../assets/tokens/token_sOHM.svg";
 
-import { ohm_dai } from "./AllBonds";
-import { JsonRpcSigner, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { IBaseAsyncThunk } from "src/slices/interfaces";
 
 // NOTE (appleseed): this looks like an outdated method... we now have this data in the graph (used elsewhere in the app)
 export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
-  const ohm_dai_address = ohm_dai.getAddressForReserve(networkID);
+  const ohm_dai_address = "";
   const pairContract = new ethers.Contract(ohm_dai_address, PairContract, provider);
   const reserves = await pairContract.getReserves();
   const marketPrice = reserves[0] / reserves[1];
@@ -126,16 +123,6 @@ export function setAll(state: any, properties: any) {
       state[key] = properties[key];
     });
   }
-}
-
-export function contractForRedeemHelper({
-  networkID,
-  provider,
-}: {
-  networkID: number;
-  provider: StaticJsonRpcProvider | JsonRpcSigner;
-}) {
-  return new ethers.Contract(addresses[networkID].REDEEM_HELPER_ADDRESS as string, RedeemHelperAbi, provider);
 }
 
 /**
