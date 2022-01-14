@@ -44,18 +44,19 @@ function Claim() {
   });
   const onChangeClaim = async action => {
     // eslint-disable-next-line no-restricted-globals
-    if (isNaN(quantity) || quantity === 0 || quantity === "") {
-      // eslint-disable-next-line no-alert
-      return dispatch(error("Please enter a value!"));
-    }
+    // quantity = 10;
+    // if (isNaN(quantity) || quantity === 0 || quantity === "") {
+    //   // eslint-disable-next-line no-alert
+    //   return dispatch(error("Please enter a value!"));
+    // }
 
-    // 1st catch if quantity > balance
-    let gweiValue = ethers.utils.parseUnits(quantity, "gwei");
+    // // 1st catch if quantity > balance
+    // let gweiValue = ethers.utils.parseUnits(quantity, "gwei");
 
-    if (action === "claim" && gweiValue.gt(ethers.utils.parseUnits(pbhdBalance, "gwei"))) {
-      return dispatch(error("You cannot claim more than your pBHD balance."));
-    }
-    await dispatch(changeClaim({ address, action, value: quantity.toString(), provider, networkID: chainID }));
+    // if (action === "claim" && gweiValue.gt(ethers.utils.parseUnits(pbhdBalance, "gwei"))) {
+    //   return dispatch(error("You cannot claim more than your pBHD balance."));
+    // }
+    await dispatch(changeClaim({ address, action, value: "", provider, networkID: chainID }));
   };
   const hasAllowance = useCallback(
     token => {
@@ -101,7 +102,7 @@ function Claim() {
                   </Box>
                 ) : (
                   <Box>
-                    <FormControl className="ohm-input" variant="outlined" color="primary">
+                    {/* <FormControl className="ohm-input" variant="outlined" color="primary">
                       <InputLabel htmlFor="amount-input"></InputLabel>
                       <OutlinedInput
                         id="amount-input"
@@ -119,7 +120,7 @@ function Claim() {
                           </InputAdornment>
                         }
                       />
-                    </FormControl>
+                    </FormControl> */}
                   </Box>
                 )
               ) : (

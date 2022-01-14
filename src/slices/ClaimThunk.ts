@@ -116,10 +116,7 @@ export const changeClaim = createAsyncThunk(
     };
     try {
       uaData.type = "claim";
-      console.log("claiming......");
-      console.log(ethers.utils.parseUnits(value, "gwei"));
-      console.log(address);
-      claimTx = await presale.withdraw(ethers.utils.parseUnits(value, "gwei"));
+      claimTx = await presale.claim();
       const pendingTxnType = "claiming";
       uaData.txHash = claimTx.hash;
       dispatch(fetchPendingTxns({ txnHash: claimTx.hash, text: "Claiming...", type: pendingTxnType }));
