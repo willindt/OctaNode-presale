@@ -95,24 +95,30 @@ function Claim() {
             <Typography className="presale-items">So after the Presale <span style={{color: "#FE4C4F"}}>20%</span>.</Typography>
           </div>
         </Grid>
-        <Grid item>
-          <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
-            <Typography className="presale-items">Total Purchased Amount</Typography>
-            <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{totalPurchasedAmount / 5} $OCTA</span></Typography>
-          </div>
-        </Grid>
-        <Grid item>
-          <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
-            <Typography className="presale-items">Claimed Amount</Typography>
-            <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimedAmount} $OCTA</span></Typography>
-          </div>
-        </Grid>
-        <Grid item>
-          <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
-            <Typography className="presale-items">Claimable Amount</Typography>
-            <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimableAmount} $OCTA</span></Typography>
-          </div>
-        </Grid>
+        {totalPurchasedAmount && 
+          <Grid item>
+            <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+              <Typography className="presale-items">Total Purchased Amount</Typography>
+              <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{totalPurchasedAmount / 5} $OCTA</span></Typography>
+            </div>
+          </Grid>
+        }
+        {claimedAmount && 
+          <Grid item>
+            <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+              <Typography className="presale-items">Claimed Amount</Typography>
+              <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimedAmount} $OCTA</span></Typography>
+            </div>
+          </Grid>
+        }
+        {claimableAmount && 
+          <Grid item>
+            <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+              <Typography className="presale-items">Claimable Amount</Typography>
+              <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimableAmount} $OCTA</span></Typography>
+            </div>
+          </Grid>
+        }
         <Grid item>
           <div className="stake-top-metrics" style={{ whiteSpace: "normal" }}>
             <Box alignItems="center" justifyContent="center" flexDirection="column" display="flex">
