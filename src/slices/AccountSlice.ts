@@ -17,15 +17,15 @@ export const getBalances = createAsyncThunk(
     const bhdBalance = await bhdContract.balanceOf(address);
     const sbhdContract = new ethers.Contract(addresses[networkID].PRESALE_ADDRESS as string, sBHD, provider);
     const sbhdBalance = await sbhdContract.balanceOf(address);
-    let poolBalance = 0;
-    const poolTokenContract = new ethers.Contract(addresses[networkID].PT_TOKEN_ADDRESS as string, ierc20Abi, provider);
-    poolBalance = await poolTokenContract.balanceOf(address);
+    // let poolBalance = 0;
+    // const poolTokenContract = new ethers.Contract(addresses[networkID].PT_TOKEN_ADDRESS as string, ierc20Abi, provider);
+    // poolBalance = await poolTokenContract.balanceOf(address);
 
     return {
       balances: {
         bhd: ethers.utils.formatUnits(bhdBalance, "gwei"),
         sbhd: ethers.utils.formatUnits(sbhdBalance, "gwei"),
-        pool: ethers.utils.formatUnits(poolBalance, "gwei"),
+        // pool: ethers.utils.formatUnits(poolBalance, "gwei"),
       },
     };
   },
@@ -43,6 +43,7 @@ export const loadAccountDetails = createAsyncThunk(
     let claimableAmount = 0;
     let totalPurchasedAmount = 0;
     let claimedAmount = 0;
+    let isAddedWhitelist = false;
     // let stakeAllowance = 0;
     // let unstakeAllowance = 0;
     // let daiBondAllowance = 0;
@@ -73,6 +74,7 @@ export const loadAccountDetails = createAsyncThunk(
     claimableAmount = await presaleContract.getClaimableAmount(address);
     totalPurchasedAmount = (await presaleContract.preBuys(address)).busdAmount;
     claimedAmount = (await presaleContract.preBuys(address)).pTokenClaimedAmount;
+    isAddedWhitelist = await presaleContract.whiteListed(address);
 
     return {
       balances: {
@@ -84,6 +86,7 @@ export const loadAccountDetails = createAsyncThunk(
       },
       presale: {
         presaleAllowance: +presaleAllowance,
+        isAddedWhitelist: isAddedWhitelist,
       },
       claim: {
         claimAllowance: +claimAllowance,

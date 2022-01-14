@@ -19,7 +19,7 @@ import {
 import { trim } from "../../helpers";
 import "./presale.scss";
 import { Skeleton } from "@material-ui/lab";
-import { error } from "../../slices/MessagesSlice";
+import { error, info } from "../../slices/MessagesSlice";
 import { ethers, BigNumber } from "ethers";
 
 function Presale() {
@@ -32,10 +32,25 @@ function Presale() {
   const price = useSelector(state => {
     return state.app.price;
   });
-  console.log("debug price", price);
   const busdBalance = useSelector(state => {
     return state.account.balances && state.account.balances.busd;
   });
+  const isAddedWhitelist = useSelector(state => {
+    return state.account.presale && state.account.presale.isAddedWhitelist;
+  });
+  const minbusdBalance = useSelector(state => {
+    return state.app.minBusdLimit;
+  });
+  const isList = useSelector(state => {
+    return state.app.isList;
+  });
+  console.log("debug aa", isAddedWhitelist, isList);
+  if (busdBalance && (Number(busdBalance) - Number(minbusdBalance) < 0)) {
+    dispatch(info("You got not enough $BUSD."));
+  }
+  if (isList && !isAddedWhitelist) {
+    dispatch(info("You are not on the whitelist."));
+  }
   const setMax = () => {
     setQuantity(busdBalance);
   };
