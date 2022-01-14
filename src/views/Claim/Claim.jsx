@@ -32,7 +32,6 @@ function Claim() {
   const pbhdBalance = useSelector(state => {
     return state.account.balances && state.account.balances.pbhd;
   });
-  console.log("debug --> Claim / pbhdBalance : ", pbhdBalance);
   const setMax = () => {
     setQuantity(pbhdBalance);
   };
@@ -42,6 +41,16 @@ function Claim() {
   const claimAllowance = useSelector(state => {
     return state.account.claim && state.account.claim.claimAllowance;
   });
+  const claimableAmount = useSelector(state => {
+    return state.account.claim && state.account.claim.claimableAmount;
+  });
+  const totalPurchasedAmount = useSelector(state => {
+    return state.account.claim && state.account.claim.totalPurchasedAmount;
+  });
+  const claimedAmount = useSelector(state => {
+    return state.account.claim && state.account.claim.claimedAmount;
+  });
+  console.log("debug", claimedAmount, totalPurchasedAmount);
   const onChangeClaim = async action => {
     // eslint-disable-next-line no-restricted-globals
     // quantity = 10;
@@ -84,6 +93,24 @@ function Claim() {
           <div className="stake-top-metrics" style={{marginBottom: "18px"}}>
             <Typography className="presale-items">You are able to claim <span style={{color: "#FE4C4F"}}>20%</span> of your purchased tokens each week.</Typography>
             <Typography className="presale-items">So after the Presale <span style={{color: "#FE4C4F"}}>20%</span>.</Typography>
+          </div>
+        </Grid>
+        <Grid item>
+          <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+            <Typography className="presale-items">Total Purchased Amount</Typography>
+            <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{totalPurchasedAmount / 5} $OCTA</span></Typography>
+          </div>
+        </Grid>
+        <Grid item>
+          <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+            <Typography className="presale-items">Claimed Amount</Typography>
+            <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimedAmount} $OCTA</span></Typography>
+          </div>
+        </Grid>
+        <Grid item>
+          <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+            <Typography className="presale-items">Claimable Amount</Typography>
+            <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimableAmount} $OCTA</span></Typography>
           </div>
         </Grid>
         <Grid item>

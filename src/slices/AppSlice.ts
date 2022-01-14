@@ -28,7 +28,6 @@ export const loadAppDetails = createAsyncThunk(
     const rate = await presaleContract.rate();
     const price = 1000000000 / rate;
     const totalTokenAmountToDistribute = await presaleContract.totalpTokenAmountToDistribute();
-    
 
     return {
       percentReleased,

@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { addresses } from "../constants";
 import { abi as ierc20Abi } from "../abi/IERC20.json";
 import { abi as sBHD } from "../abi/Presale.json";
+import { abi as PresaleContract } from "../abi/Presale.json";
 import { abi as pBHD } from "../abi/Presale.json";
 import { setAll } from "../helpers";
 
@@ -39,10 +40,13 @@ export const loadAccountDetails = createAsyncThunk(
     let busdBalance = 0;
     let presaleAllowance = 0;
     let claimAllowance = 0;
-    let stakeAllowance = 0;
-    let unstakeAllowance = 0;
-    let daiBondAllowance = 0;
-    let poolAllowance = 0;
+    let claimableAmount = 0;
+    let totalPurchasedAmount = 0;
+    let claimedAmount = 0;
+    // let stakeAllowance = 0;
+    // let unstakeAllowance = 0;
+    // let daiBondAllowance = 0;
+    // let poolAllowance = 0;
 
 
     const busdContract = new ethers.Contract(addresses[networkID].BUSD_ADDRESS as string, ierc20Abi, provider);
@@ -52,6 +56,12 @@ export const loadAccountDetails = createAsyncThunk(
     const bhdContract = new ethers.Contract(addresses[networkID].TOKEN_ADDRESS as string, ierc20Abi, provider);
     bhdBalance = await bhdContract.balanceOf(address);
 
+    const presaleContract = new ethers.Contract(
+      addresses[networkID].PRESALE_ADDRESS as string,
+      PresaleContract,
+      provider,
+    );
+
     if (addresses[networkID].BUSD_ADDRESS) {
       presaleAllowance = await busdContract.allowance(address, addresses[networkID].PRESALE_ADDRESS);
     }
@@ -59,6 +69,10 @@ export const loadAccountDetails = createAsyncThunk(
     if (addresses[networkID].TOKEN_ADDRESS) {
       claimAllowance = await bhdContract.allowance(address, addresses[networkID].PRESALE_ADDRESS);
     }
+
+    claimableAmount = await presaleContract.getClaimableAmount(address);
+    totalPurchasedAmount = (await presaleContract.preBuys(address)).busdAmount;
+    claimedAmount = (await presaleContract.preBuys(address)).pTokenClaimedAmount;
 
     return {
       balances: {
@@ -73,17 +87,20 @@ export const loadAccountDetails = createAsyncThunk(
       },
       claim: {
         claimAllowance: +claimAllowance,
+        claimableAmount: ethers.utils.formatEther(claimableAmount),
+        totalPurchasedAmount: ethers.utils.formatEther(totalPurchasedAmount),
+        claimedAmount: ethers.utils.formatEther(claimedAmount),
       },
-      staking: {
-        bhdStake: +stakeAllowance,
-        bhdUnstake: +unstakeAllowance,
-      },
-      bonding: {
-        daiAllowance: daiBondAllowance,
-      },
-      pooling: {
-        sbhdPool: +poolAllowance,
-      },
+      // staking: {
+      //   bhdStake: +stakeAllowance,
+      //   bhdUnstake: +unstakeAllowance,
+      // },
+      // bonding: {
+      //   daiAllowance: daiBondAllowance,
+      // },
+      // pooling: {
+      //   sbhdPool: +poolAllowance,
+      // },
     };
   },
 );
