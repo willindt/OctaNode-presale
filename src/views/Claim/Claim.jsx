@@ -88,16 +88,16 @@ function Claim() {
             </div>
           </Grid>
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <div className="stake-top-metrics" style={{marginBottom: "18px"}}>
             <Typography className="presale-items">20% each week at the public launch.</Typography>
-            {/* <Typography className="presale-items">So after the Presale <span style={{color: "#FE4C4F"}}>20%</span>.</Typography> */}
+            <Typography className="presale-items">So after the Presale <span style={{color: "#FE4C4F"}}>20%</span>.</Typography>
           </div>
-        </Grid>
+        </Grid> */}
         {totalPurchasedAmount && 
           <Grid item>
             <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
-              <Typography className="presale-items">Total Purchased Amount</Typography>
+              <Typography className="presale-items">Total Purchased Amount:</Typography>
               <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{totalPurchasedAmount / 5} $OCTA</span></Typography>
             </div>
           </Grid>
@@ -105,7 +105,7 @@ function Claim() {
         {claimedAmount && 
           <Grid item>
             <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
-              <Typography className="presale-items">Claimed Amount</Typography>
+              <Typography className="presale-items">Claimed Amount:</Typography>
               <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimedAmount} $OCTA</span></Typography>
             </div>
           </Grid>
@@ -113,7 +113,7 @@ function Claim() {
         {claimableAmount && 
           <Grid item>
             <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
-              <Typography className="presale-items">Claimable Amount</Typography>
+              <Typography className="presale-items">Claimable Amount:</Typography>
               <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{claimableAmount} $OCTA</span></Typography>
             </div>
           </Grid>
@@ -163,6 +163,7 @@ function Claim() {
                 <Skeleton width="45%" />
               ) : address && hasAllowance("pbhd") ? (
                 <Box alignItems="center" justifyContent="center" flexDirection="column" display="flex">
+                  <Typography style={{marginTop: "16px"}}>20% each week at the public launch.</Typography>
                   <Button
                     className="stake-button"
                     variant="contained"

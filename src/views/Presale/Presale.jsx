@@ -179,6 +179,7 @@ function Presale() {
                     {/* <Grid item xs={12} sm={2} md={2} lg={2} /> */}
                     <Box alignItems="center" justifyContent="center" flexDirection="column" display="flex">
                       <Typography style={{marginTop: "16px"}}>1 $OCTA = 5 $BUSD</Typography>
+                      <Typography style={{marginTop: "16px"}}>Enter Amount in $BUSD</Typography>
                       <Button
                         className="stake-button"
                         variant="contained"
