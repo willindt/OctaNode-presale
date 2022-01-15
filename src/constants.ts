@@ -10,7 +10,7 @@ interface IAddresses {
 export const addresses: IAddresses = {
   56: {
     BUSD_ADDRESS: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
-    TOKEN_ADDRESS: "0xfCE28BE5df7B09C5ce8Bb47c2f627d8C9F26DeE3",
+    TOKEN_ADDRESS: "0xf34c9cc7387408ae00ab4ee8a7f8a39bc260ba14",
     PRESALE_ADDRESS: "0x99d6Ef8A48AA752Bb1C2F664D9745D370e14B129",
   },
 };

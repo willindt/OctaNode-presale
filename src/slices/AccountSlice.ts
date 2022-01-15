@@ -35,8 +35,6 @@ export const loadAccountDetails = createAsyncThunk(
   "account/loadAccountDetails",
   async ({ networkID, provider, address }: IBaseAddressAsyncThunk) => {
     let bhdBalance = 0;
-    let sbhdBalance = 0;
-    let pbhdBalance = 0;
     let busdBalance = 0;
     let presaleAllowance = 0;
     let claimAllowance = 0;
@@ -44,10 +42,6 @@ export const loadAccountDetails = createAsyncThunk(
     let totalPurchasedAmount = 0;
     let claimedAmount = 0;
     let isAddedWhitelist = false;
-    // let stakeAllowance = 0;
-    // let unstakeAllowance = 0;
-    // let daiBondAllowance = 0;
-    // let poolAllowance = 0;
 
 
     const busdContract = new ethers.Contract(addresses[networkID].BUSD_ADDRESS as string, ierc20Abi, provider);
@@ -70,23 +64,22 @@ export const loadAccountDetails = createAsyncThunk(
     if (addresses[networkID].TOKEN_ADDRESS) {
       claimAllowance = await bhdContract.allowance(address, addresses[networkID].PRESALE_ADDRESS);
     }
-
-    claimableAmount = await presaleContract.getClaimableAmount(address);
-    totalPurchasedAmount = (await presaleContract.preBuys(address)).busdAmount;
-    claimedAmount = (await presaleContract.preBuys(address)).pTokenClaimedAmount;
     isAddedWhitelist = await presaleContract.whiteListed(address);
-
+    console.log("debugwhitelist", isAddedWhitelist);
+    const isPresaleOpen = await presaleContract.isPresaleOpen();
+    if (!isPresaleOpen){
+      claimableAmount = await presaleContract.getClaimableAmount(address);
+      totalPurchasedAmount = (await presaleContract.preBuys(address)).busdAmount;
+      claimedAmount = (await presaleContract.preBuys(address)).pTokenClaimedAmount;
+    }
     return {
       balances: {
-        dai: 0,
         busd: ethers.utils.formatEther(busdBalance),
         bhd: ethers.utils.formatUnits(bhdBalance, "gwei"),
-        sbhd: ethers.utils.formatUnits(sbhdBalance, "gwei"),
-        pbhd: ethers.utils.formatUnits(pbhdBalance, "gwei"),
       },
       presale: {
         presaleAllowance: +presaleAllowance,
-        isAddedWhitelist: isAddedWhitelist,
+        isWhiteList: isAddedWhitelist,
       },
       claim: {
         claimAllowance: +claimAllowance,
@@ -112,16 +105,13 @@ export const loadAccountDetails = createAsyncThunk(
 interface IAccountSlice {
   balances: {
     bhd: string;
-    sbhd: string;
-    pbhd: string;
-    dai: string;
     busd: string;
   };
   loading: boolean;
 }
 const initialState: IAccountSlice = {
   loading: false,
-  balances: { bhd: "", sbhd: "", pbhd: "", dai: "", busd: "" },
+  balances: { bhd: "", busd: "" },
 };
 
 const accountSlice = createSlice({

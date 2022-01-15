@@ -50,7 +50,6 @@ function Claim() {
   const claimedAmount = useSelector(state => {
     return state.account.claim && state.account.claim.claimedAmount;
   });
-  console.log("debug", claimedAmount, totalPurchasedAmount);
   const onChangeClaim = async action => {
     // eslint-disable-next-line no-restricted-globals
     // quantity = 10;
@@ -91,7 +90,7 @@ function Claim() {
         </Grid>
         <Grid item>
           <div className="stake-top-metrics" style={{marginBottom: "18px"}}>
-            <Typography className="presale-items">You are able to claim <span style={{color: "#FE4C4F"}}>20%</span> of your purchased tokens each week.</Typography>
+            <Typography className="presale-items">The vesting period will last for 4 weeks, change to -&gt; Starting from the Public Launch 20% will be released each week</Typography>
             <Typography className="presale-items">So after the Presale <span style={{color: "#FE4C4F"}}>20%</span>.</Typography>
           </div>
         </Grid>

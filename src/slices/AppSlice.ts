@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { addresses } from "../constants";
 import { abi as PresaleContract } from "../abi/Presale.json";
+import { abi as ierc20Abi } from "../abi/IERC20.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
 import { NodeHelper } from "../helpers/NodeHelper";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
@@ -20,6 +21,10 @@ export const loadAppDetails = createAsyncThunk(
       PresaleContract,
       provider,
     );
+    const bhdContract = new ethers.Contract(addresses[networkID].TOKEN_ADDRESS as string, ierc20Abi, provider);
+    const tokenBalance = await bhdContract.balanceOf(addresses[networkID].PRESALE_ADDRESS);
+    const totalTokenAmount = ethers.utils.formatEther(tokenBalance);
+    console.log("debug tokenbalance", tokenBalance, typeof(tokenBalance));
     const percentReleased = await presaleContract.getPercentReleased();
     const isList = await presaleContract.isList();
     const isPresaleOpen = await presaleContract.isPresaleOpen();
@@ -38,28 +43,10 @@ export const loadAppDetails = createAsyncThunk(
       minBusdLimit,
       price,
       totalTokenAmountToDistribute,
+      totalTokenAmount,
     } as IPresaleData;
   },
 );
-
-
-interface IAppData {
-  readonly circSupply: number;
-  readonly currentIndex?: string;
-  readonly currentBlock?: number;
-  readonly fiveDayRate?: number;
-  readonly oldfiveDayRate?: number;
-  readonly marketCap: number;
-  readonly marketPrice: number;
-  readonly stakingAPY?: number;
-  readonly stakingRebase?: number;
-  readonly old_stakingRebase?: number;
-  readonly stakingTVL: number;
-  readonly totalSupply: number;
-  readonly treasuryBalance?: number;
-  readonly endBlock?: number;
-  readonly runway?: number;
-}
 
 interface IPresaleData {
   readonly percentReleased: number;
@@ -69,6 +56,7 @@ interface IPresaleData {
   readonly minBusdLimit: number;
   readonly price: number;
   readonly totalTokenAmountToDistribute: number;
+  readonly totalTokenAmount: string;
 }
 
 const appSlice = createSlice({

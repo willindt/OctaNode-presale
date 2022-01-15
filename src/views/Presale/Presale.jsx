@@ -24,6 +24,7 @@ import { ethers, BigNumber } from "ethers";
 
 function Presale() {
   const dispatch = useDispatch();
+  let isLoad = false;
   const { provider, address, connected, connect, chainID } = useWeb3Context();
   const [quantity, setQuantity] = useState("");
   const pendingTransactions = useSelector(state => {
@@ -36,17 +37,26 @@ function Presale() {
     return state.account.balances && state.account.balances.busd;
   });
   const isAddedWhitelist = useSelector(state => {
-    return state.account.presale && state.account.presale.isAddedWhitelist;
+    return state.account.presale && state.account.presale.isWhiteList;
   });
   const minbusdBalance = useSelector(state => {
     return state.app.minBusdLimit;
   });
+  const tokenAmount = useSelector(state => {
+    return state.app.totalTokenAmount
+  }); 
+  const totalTokenAmountToDistribute = useSelector(state => {
+    return state.app.totalTokenAmountToDistribute;
+  });
   const isList = useSelector(state => {
     return state.app.isList;
   });
-  console.log("debug aa", isAddedWhitelist, isList);
-  if (busdBalance && (Number(busdBalance) - Number(minbusdBalance) < 0)) {
+  const isPresaleOpen = useSelector(state => {
+    return state.app.isPresaleOpen;
+  });
+  if (!isLoad && busdBalance && (Number(busdBalance) - Number(minbusdBalance) < 0)) {
     dispatch(info("You got not enough $BUSD."));
+    isLoad = true;
   }
   if (isList && !isAddedWhitelist) {
     dispatch(info("You are not on the whitelist."));
@@ -60,6 +70,8 @@ function Presale() {
   const presaleAllowance = useSelector(state => {
     return state.account.presale && state.account.presale.presaleAllowance;
   });
+  const tokenBought = totalTokenAmountToDistribute / 1000000000;
+  const tokensRemain = tokenAmount - tokenBought;
   const onChangeDeposit = async action => {
     // eslint-disable-next-line no-restricted-globals
     if (isNaN(quantity) || quantity === 0 || quantity === "") {
@@ -102,7 +114,20 @@ function Presale() {
               <Typography className="presale-items">You have until *** to purchase your desired <span style={{color: "#FE4C4F"}}>$OCTA</span> tokens.</Typography>
             </div>
           </Grid>
-          <Grid item>
+          {totalTokenAmountToDistribute && totalTokenAmountToDistribute && 
+            <Grid item>
+              <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+                <Typography className="presale-items">Tokens bought:</Typography>
+                <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{tokenBought.toFixed(3)} $OCTA</span></Typography>
+              </div>
+              <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
+                <Typography className="presale-items">Tokens remaining:</Typography>
+                <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{tokensRemain.toFixed(3)} $OCTA</span></Typography>
+              </div>
+            </Grid>
+          }
+          
+          {isPresaleOpen ? <Grid item>
             <div className="stake-top-metrics" style={{ whiteSpace: "normal" }}>
               <Box alignItems="center" justifyContent="center" flexDirection="column" display="flex">
                 {address && !isAllowanceDataLoading ? (
@@ -186,6 +211,11 @@ function Presale() {
               </Box>
             </div>
           </Grid>
+          :
+          <Grid item>
+            <Typography className="presale-items" varient="h4">Presale is not started</Typography>
+          </Grid>
+          }
         </Grid>
       </Paper>
     </div>
