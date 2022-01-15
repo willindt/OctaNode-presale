@@ -68,9 +68,10 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
           </Link>
 
           <Link
-            component={NavLink}
+            component="a"
+            target="_blank"
             className="nav-link"
-            to="/dashboard"
+            href="https://octa-node-presale.vercel.app/whitepaper.pdf"
           >
             <Typography variant="h6" className="nav-link-text">
               WhitePaper

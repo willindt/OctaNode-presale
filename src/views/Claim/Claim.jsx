@@ -90,8 +90,8 @@ function Claim() {
         </Grid>
         <Grid item>
           <div className="stake-top-metrics" style={{marginBottom: "18px"}}>
-            <Typography className="presale-items">The vesting period will last for 4 weeks, change to -&gt; Starting from the Public Launch 20% will be released each week</Typography>
-            <Typography className="presale-items">So after the Presale <span style={{color: "#FE4C4F"}}>20%</span>.</Typography>
+            <Typography className="presale-items">20% each week at the public launch.</Typography>
+            {/* <Typography className="presale-items">So after the Presale <span style={{color: "#FE4C4F"}}>20%</span>.</Typography> */}
           </div>
         </Grid>
         {totalPurchasedAmount && 

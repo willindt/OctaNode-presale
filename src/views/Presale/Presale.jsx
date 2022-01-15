@@ -108,12 +108,12 @@ function Presale() {
               <Typography variant="h5">Presale</Typography>
             </div>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <div className="stake-top-metrics">
               <Typography className="presale-items">You are able to purchase up to 250 <span style={{color: "#FE4C4F"}}>$OCTA</span> tokens.</Typography>
               <Typography className="presale-items">You have until *** to purchase your desired <span style={{color: "#FE4C4F"}}>$OCTA</span> tokens.</Typography>
             </div>
-          </Grid>
+          </Grid> */}
           {totalTokenAmountToDistribute && totalTokenAmountToDistribute && 
             <Grid item>
               <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
@@ -121,7 +121,7 @@ function Presale() {
                 <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{tokenBought.toFixed(3)} $OCTA</span></Typography>
               </div>
               <div className="stake-top-metrics data-row-centered" style={{marginBottom: "18px"}}>
-                <Typography className="presale-items">Tokens remaining:</Typography>
+                <Typography className="presale-items">Tokens left:</Typography>
                 <Typography className="presale-items" style={{marginLeft: "16px"}}><span style={{color: "#FE4C4F"}}>{tokensRemain.toFixed(3)} $OCTA</span></Typography>
               </div>
             </Grid>

@@ -50,10 +50,10 @@ function NavContent() {
           </Box>
           <Box display="flex" justifyContent={"space-around"} mt="8px">
             <div style={{width: "180px"}}>
-              <Link href="" target="_blank" component="a">
+              <Link href="https://discord.gg/OctaNode" target="_blank" component="a">
                 <SvgIcon color="primary" component={DiscordIcon} />
               </Link>
-              <Link href="" target="_blank" component="a" style={{marginLeft: "8px"}}>
+              <Link href="https://twitter.com/@OctaNode" target="_blank" component="a" style={{marginLeft: "8px"}}>
                 <SvgIcon color="primary" component={TwitterIcon} />
               </Link>
             </div>
