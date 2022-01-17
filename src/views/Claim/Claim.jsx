@@ -163,7 +163,7 @@ function Claim() {
                 <Skeleton width="45%" />
               ) : address && hasAllowance("pbhd") ? (
                 <Box alignItems="center" justifyContent="center" flexDirection="column" display="flex">
-                  <Typography style={{marginTop: "16px"}}>20% each week starting at the public launch.</Typography>
+                  <Typography style={{marginTop: "16px"}}>20% will be claimable weekly starting from the public launch.</Typography>
                   <Button
                     className="stake-button"
                     variant="contained"
