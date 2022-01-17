@@ -214,7 +214,7 @@ function Presale() {
           </Grid>
           :
           <Grid item>
-            <Typography className="presale-items" varient="h4">Presale is not started</Typography>
+            <Typography className="presale-items" varient="h4">Presale has not started yet.</Typography>
           </Grid>
           }
         </Grid>
