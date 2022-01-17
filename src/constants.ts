@@ -1,4 +1,3 @@
-export const THE_GRAPH_URL = "https://api.thegraph.com/subgraphs/name/drondin/olympus-graph";
 export const EPOCH_INTERVAL = 9600;
 
 // NOTE could get this from an outside source since it changes slightly over time
