@@ -25,7 +25,7 @@ import { ethers, BigNumber } from "ethers";
 function Claim() {
   const dispatch = useDispatch();
   const { provider, address, connected, connect, chainID } = useWeb3Context();
-  const [quantity, setQuantity] = useState("");
+  const [quantity, setQuantity] = useState("");https://github.com/Laotzux/test-presale/blob/main/src/views/Claim/Claim.jsx
   const pendingTransactions = useSelector(state => {
     return state.pendingTransactions;
   });
@@ -78,7 +78,7 @@ function Claim() {
     <div id="dashboard-view">
       <div className="presale-header">
         <h1>Claim</h1>
-        <p>The vesting period will last for 4 weeks.</p>
+        <p>The vesting period will start at the public launch.</p>
       </div>
       <Paper className={`ohm-card`}>
         <Grid container direction="column" spacing={2}>
@@ -163,7 +163,7 @@ function Claim() {
                 <Skeleton width="45%" />
               ) : address && hasAllowance("pbhd") ? (
                 <Box alignItems="center" justifyContent="center" flexDirection="column" display="flex">
-                  <Typography style={{marginTop: "16px"}}>20% each week at the public launch.</Typography>
+                  <Typography style={{marginTop: "16px"}}>20% will be claimable weekly starting from the public launch.</Typography>
                   <Button
                     className="stake-button"
                     variant="contained"
